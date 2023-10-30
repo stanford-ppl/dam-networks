@@ -9,7 +9,7 @@ use super::{
 };
 
 #[context_macro]
-struct SimpleSwitch<T, LT, PolicyType>
+pub struct SimpleSwitch<T, LT, PolicyType>
 where
     T: DAMType,
 {
