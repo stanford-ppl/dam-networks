@@ -6,5 +6,5 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dam = { git = "ssh://git@github.com/stanford-ppl/DAM-RS.git", branch = "dev" }
+dam = { git = "ssh://git@github.com/stanford-ppl/DAM-RS.git", branch = "dev", default-features = false, features = ["dot"]}
 fxhash = "0.2.1"
