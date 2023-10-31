@@ -1,6 +1,6 @@
-use std::{hash::Hash, marker::PhantomData};
+use std::hash::Hash;
 
-use dam::{channel::utils::Peekable, context_tools::*};
+use dam::{channel::utils::Peekable, context_tools::*, structures::SyncSendMarker};
 use fxhash::FxHashSet;
 
 use super::{
@@ -19,13 +19,13 @@ where
     policy: PolicyType,
     latency: u64,
 
-    _marker: PhantomData<LT>,
+    _marker: SyncSendMarker<LT>,
 }
 
 impl<T: DAMType, LT, PolicyType> Context for SimpleSwitch<T, LT, PolicyType>
 where
     T: Packet<LT>,
-    LT: Sync + Send + Eq + Hash,
+    LT: Eq + Hash,
     PolicyType: Policy<LT> + Sync + Send,
 {
     fn run(&mut self) {
