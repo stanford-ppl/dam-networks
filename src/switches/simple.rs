@@ -171,7 +171,7 @@ mod tests {
 
     #[test]
     fn simple_switch_test() {
-        const NUM_PACKETS: u16 = 32;
+        const NUM_PACKETS: u16 = 2048;
 
         let mut ctx = ProgramBuilder::default();
 
@@ -211,14 +211,16 @@ mod tests {
         ctx.add_child(comp);
 
         let (switch2check_snd, switch2check_rcv) = ctx.unbounded();
-        ctx.add_child(PrinterContext::new(switch2check_rcv));
+        ctx.add_child(ConsumerContext::new(switch2check_rcv));
 
         switch.add_port(Port { id: 2, input: None, output: Some(switch2check_snd) });
         ctx.add_child(switch);
 
         let initialized = ctx.initialize(Default::default()).unwrap();
         println!("{}", initialized.to_dot_string());
-        initialized.run(Default::default());
+        let executed = initialized.run(Default::default());
+
+        assert_eq!(NUM_PACKETS as u64 + 4, executed.elapsed_cycles().unwrap().time());
 
     }
 }
